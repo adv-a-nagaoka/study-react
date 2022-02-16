@@ -12,5 +12,7 @@ export const Header: FC = () => {
 const StHeaderRoot = styled.header`
   background-color: rgb(27, 161, 255);
   color: rgb(255, 255, 255);
+  font-size: 20px;
   width: 100%;
+  padding: 8px;
 `;
