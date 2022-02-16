@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
-import { Template } from "../components/templates";
+import { Template } from "src/components/templates";
+import { Top } from "src/components/organisms/Top";
 
 const Home: NextPage = () => {
   return (
     <Template title="test">
-      <div>
-        <p>Test</p>
-      </div>
+      <Top />
     </Template>
   );
 };
