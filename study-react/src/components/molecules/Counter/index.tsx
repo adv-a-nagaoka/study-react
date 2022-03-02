@@ -13,13 +13,11 @@ export const Counter: FC<Props> = ({
   handleDecrement,
 }) => {
   return (
-    <>
-      <StCountWrapper>
-        <StButton onClick={handleDecrement}> - </StButton>
-        <div>{count}</div>
-        <StButton onClick={handleIncrement}> + </StButton>
-      </StCountWrapper>
-    </>
+    <StCountWrapper>
+      <StButton onClick={handleDecrement}> - </StButton>
+      <div>{count}</div>
+      <StButton onClick={handleIncrement}> + </StButton>
+    </StCountWrapper>
   );
 };
 

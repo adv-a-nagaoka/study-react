@@ -7,11 +7,7 @@ type Props = {
 };
 
 export const Tag: FC<Props> = ({ tag, handlePushTag }) => {
-  return (
-    <>
-      <StTag onClick={() => handlePushTag(tag)}>{tag}</StTag>
-    </>
-  );
+  return <StTag onClick={() => handlePushTag(tag)}>{tag}</StTag>;
 };
 
 const StTag = styled.li`
