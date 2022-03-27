@@ -7,14 +7,14 @@ export type TagList = { id: string; value: string }[];
 type Props = {
   tag: string[];
   tagList: TagList;
-  handleClearTag: () => void;
+  handleAllClearTag: () => void;
   handlePushTag: (addTag: string) => void;
 };
 
 export const TagArea: FC<Props> = ({
   tag,
   tagList,
-  handleClearTag,
+  handleAllClearTag,
   handlePushTag,
 }) => {
   return (
@@ -22,10 +22,10 @@ export const TagArea: FC<Props> = ({
       <StSelectedTagAreaWrapper>
         <StSelectedTagArea>
           {tag.map((t) => (
-            <Tag key={t} tag={t} handlePushTag={handlePushTag} />
+            <Tag key={t} tag={t} handleCloseTag={handlePushTag} />
           ))}
         </StSelectedTagArea>
-        <div onClick={handleClearTag}>×</div>
+        <div onClick={handleAllClearTag}>×</div>
       </StSelectedTagAreaWrapper>
       <StSelectAreaWrapper>
         <StSelectArea>

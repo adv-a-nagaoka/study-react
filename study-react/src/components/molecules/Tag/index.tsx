@@ -3,11 +3,16 @@ import styled from "styled-components";
 
 type Props = {
   tag: string;
-  handlePushTag: (addTag: string) => void;
+  handleCloseTag: (tag: string) => void;
 };
 
-export const Tag: FC<Props> = ({ tag, handlePushTag }) => {
-  return <StTag onClick={() => handlePushTag(tag)}>{tag}</StTag>;
+export const Tag: FC<Props> = ({ tag, handleCloseTag }) => {
+  return (
+    <StTag>
+      <StTagText>{tag}</StTagText>
+      <StCloseButton onClick={() => handleCloseTag(tag)}>×</StCloseButton>
+    </StTag>
+  );
 };
 
 const StTag = styled.li`
@@ -15,6 +20,20 @@ const StTag = styled.li`
   color: #fff;
   border-radius: 24px;
   margin-right: 8px;
+  margin-bottom: 8px;
   padding: 4px 12px;
   font-size: 12px;
+`;
+const StTagText = styled.span`
+  display: inline-block;
+  margin-right: 8px;
+`;
+const StCloseButton = styled.button`
+  appearance: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+  vertical-align: middle;
 `;
