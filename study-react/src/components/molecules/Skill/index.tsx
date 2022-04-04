@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 
 export type Skill = {
@@ -7,30 +7,9 @@ export type Skill = {
   value: string;
 };
 
-export const useSkill = () => {
-  const [selectSkill, setSelectSkill] = useState<string[]>([]);
-  const handleSelectSkill = useCallback(
-    (tag: string) => {
-      if (selectSkill.some((e) => e === tag)) {
-        // 一致するタグがすでに存在する場合
-        setSelectSkill(selectSkill.filter((e) => e !== tag));
-      } else {
-        // なければ追加
-        setSelectSkill([...selectSkill, tag]);
-      }
-    },
-    [selectSkill]
-  );
-
-  return {
-    selectSkill,
-    handleSelectSkill,
-  };
-};
-
 type Props = {
   skillList: Skill[];
-  handleSelectSkill: (tag: string) => void;
+  handleSelectSkill: (tag: Skill) => void;
 };
 
 export const SkillList: FC<Props> = ({ skillList, handleSelectSkill }) => {
@@ -43,7 +22,7 @@ export const SkillList: FC<Props> = ({ skillList, handleSelectSkill }) => {
         <StSelectText
           key={t.id}
           value={t.value}
-          onClick={() => handleSelectSkill(t.value)}
+          onClick={() => handleSelectSkill(t)}
         >
           {t.value}
         </StSelectText>

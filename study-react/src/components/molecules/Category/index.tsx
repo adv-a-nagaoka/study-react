@@ -1,5 +1,4 @@
 import { ChangeEvent, FC } from "react";
-import { useState, useCallback } from "react";
 import styled from "styled-components";
 
 export type Category = {
@@ -10,23 +9,6 @@ export type Category = {
 type Props = {
   categoryList: Category[];
   handleSelectCategory: (e: ChangeEvent<HTMLSelectElement>) => void;
-};
-
-export const useCategory = () => {
-  const [selectCategory, setSelectCategory] = useState<number>(0);
-  const handleSelectCategory = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      console.log("handleSelectCategory", e.target.value);
-      const categoryId = Number(e.target.value);
-      setSelectCategory(categoryId);
-    },
-    [selectCategory]
-  );
-
-  return {
-    selectCategory,
-    handleSelectCategory,
-  };
 };
 
 export const CategoryList: FC<Props> = ({
