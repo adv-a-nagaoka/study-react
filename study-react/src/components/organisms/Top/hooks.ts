@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, ChangeEvent } from "react";
+import { Skill } from "../../molecules/Skill";
 
 export const useCount = () => {
   const [count, setCount] = useState(0);
@@ -35,4 +36,51 @@ export const useTagList = () => {
   };
 
   return { tag, handleClearTag, handlePushTag };
+};
+
+export const useCategory = () => {
+  const [selectCategory, setSelectCategory] = useState<number>(0);
+  const handleSelectCategory = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      console.log("handleSelectCategory", e.target.value);
+      const categoryId = Number(e.target.value);
+      setSelectCategory(categoryId);
+    },
+    [selectCategory]
+  );
+
+  return {
+    selectCategory,
+    handleSelectCategory,
+  };
+};
+
+export const useSkill = () => {
+  const [selectSkill, setSelectSkill] = useState<Skill[]>([]);
+  const handleSelectSkill = useCallback(
+    (tag: Skill) => {
+      // 存在しなければ追加
+      const isExist = selectSkill.some((e) => e.value === tag.value);
+      if (!isExist) {
+        setSelectSkill([...selectSkill, tag]);
+      }
+    },
+    [selectSkill]
+  );
+  const handleDeleteSkill = useCallback(
+    (tag: string) => {
+      // 一致するタグが存在するかチェック
+      if (selectSkill.some((e) => e.value === tag)) {
+        // 該当のスキルを除外してset
+        setSelectSkill(selectSkill.filter((e) => e.value !== tag));
+      }
+    },
+    [selectSkill]
+  );
+
+  return {
+    selectSkill,
+    handleSelectSkill,
+    handleDeleteSkill,
+  };
 };

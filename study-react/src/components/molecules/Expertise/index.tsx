@@ -1,15 +1,16 @@
-import { ChangeEvent, FC, useCallback, useState } from "react";
+import { ChangeEvent, FC } from "react";
 import styled from "styled-components";
 import { Category, CategoryList } from "../Category";
 import { Skill, SkillList } from "../Skill";
-import { Tag } from "../Tag";
+import { TagColor, Tag } from "../Tag";
 
 type Props = {
   categoryList: Category[];
   handleSelectCategory: (e: ChangeEvent<HTMLSelectElement>) => void;
   skillList: Skill[];
-  selectSkill: string[];
-  handleSelectSkill: (tag: string) => void;
+  selectSkill: Skill[];
+  handleSelectSkill: (tag: Skill) => void;
+  handleDeleteSkill: (tag: string) => void;
 };
 
 export const Expertise: FC<Props> = ({
@@ -18,13 +19,19 @@ export const Expertise: FC<Props> = ({
   skillList,
   selectSkill,
   handleSelectSkill,
+  handleDeleteSkill,
 }) => {
   return (
     <StWrapper>
       <StSelectedTagAreaWrapper>
         <StSelectedTagArea>
           {selectSkill.map((t) => (
-            <Tag key={t} tag={t} handleCloseTag={handleSelectSkill} />
+            <Tag
+              color={getColor(t.categoryId)}
+              key={t.id}
+              tag={t.value}
+              handleCloseTag={handleDeleteSkill}
+            />
           ))}
         </StSelectedTagArea>
       </StSelectedTagAreaWrapper>
@@ -42,6 +49,25 @@ export const Expertise: FC<Props> = ({
       </StSkillArea>
     </StWrapper>
   );
+};
+
+const getColor = (categoryId: number): TagColor => {
+  let color: TagColor = "blue";
+  switch (categoryId) {
+    case 1:
+    default:
+      break;
+    case 2:
+      color = "red";
+      break;
+    case 3:
+      color = "green";
+      break;
+    case 4:
+      color = "yellow";
+      break;
+  }
+  return color;
 };
 
 const StWrapper = styled.div`

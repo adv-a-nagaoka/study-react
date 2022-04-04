@@ -2,16 +2,16 @@ import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Counter } from "../../molecules/Counter";
 import { TagArea, TagList } from "../../molecules/TagArea";
-import { Skill, useSkill } from "../../molecules/Skill";
-import { Category, useCategory } from "../../molecules/Category";
+import { Skill } from "../../molecules/Skill";
+import { Category } from "../../molecules/Category";
 import { Expertise } from "../../molecules/Expertise";
-import { useCount, useTagList } from "./hooks";
+import { useCount, useTagList, useSkill, useCategory } from "./hooks";
 
 export const Top: FC = () => {
   const { count, handleIncrement, handleDecrement, resetCount } = useCount();
   const { tag, handleClearTag, handlePushTag } = useTagList();
   const { selectCategory, handleSelectCategory } = useCategory();
-  const { selectSkill, handleSelectSkill } = useSkill();
+  const { selectSkill, handleSelectSkill, handleDeleteSkill } = useSkill();
 
   const [tagList, setTagList] = useState<TagList>([]);
   const [skillList, setSkillList] = useState<Skill[]>([]);
@@ -84,6 +84,7 @@ export const Top: FC = () => {
             skillList={skillList}
             selectSkill={selectSkill}
             handleSelectSkill={handleSelectSkill}
+            handleDeleteSkill={handleDeleteSkill}
           />
         </StArticle>
       </StContent>
