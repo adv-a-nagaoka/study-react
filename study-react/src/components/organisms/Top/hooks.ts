@@ -59,9 +59,11 @@ export const useSkill = () => {
   const [selectSkill, setSelectSkill] = useState<Skill[]>([]);
   const handleSelectSkill = useCallback(
     (tag: Skill) => {
-      // 存在しなければ追加
-      const isExist = selectSkill.some((e) => e.value === tag.value);
-      if (!isExist) {
+      if (selectSkill.some((e) => e.value === tag.value)) {
+        // 既に存在していれば該当のスキルを除外してset
+        setSelectSkill(selectSkill.filter((e) => e.value !== tag.value));
+      } else {
+        // 存在しなければ追加
         setSelectSkill([...selectSkill, tag]);
       }
     },
