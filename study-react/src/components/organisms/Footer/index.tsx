@@ -10,11 +10,10 @@ export const Footer: FC = () => {
 };
 
 const StFooterRoot = styled.footer`
-  position: fixed;
-  bottom: 0;
   background-color: rgb(34, 34, 34);
   color: rgb(255, 255, 255);
   font-size: 20px;
   width: 100%;
+  margin-top: 32px;
   padding: 8px;
 `;

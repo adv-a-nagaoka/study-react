@@ -1,37 +1,58 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Counter } from "../../molecules/Counter";
 import { TagArea, TagList } from "../../molecules/TagArea";
+import { Skill } from "../../molecules/Skill";
+import { Category } from "../../molecules/Category";
+import { Expertise } from "../../molecules/Expertise";
+import { useCount, useTagList, useSkill, useCategory } from "./hooks";
 
 export const Top: FC = () => {
-  const [count, setCount] = useState(0);
-  const handleIncrement = () => setCount(count + 1);
-  const handleDecrement = () => {
-    // カウントが0以下にならないようにする
-    if (count === 0) return;
-    setCount(count - 1);
-  };
+  const { count, handleIncrement, handleDecrement, resetCount } = useCount();
+  const { tag, handleClearTag, handlePushTag } = useTagList();
+  const { selectCategory, handleSelectCategory } = useCategory();
+  const { selectSkill, handleSelectSkill, handleDeleteSkill } = useSkill();
 
-  const [tag, setTag] = useState<string[]>([]);
-  const handleClearTag = () => setTag([]);
-  const handlePushTag = (addTag: string) => {
-    if (tag.some((e) => e === addTag)) {
-      // 一致するタグがすでに存在する場合
-      setTag(tag.filter((e) => e !== addTag));
-    } else {
-      // なければ追加
-      setTag([...tag, addTag]);
+  const [tagList, setTagList] = useState<TagList>([]);
+  const [skillList, setSkillList] = useState<Skill[]>([]);
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
+  // 初回のみ呼び出し
+  useEffect(() => {
+    console.log("mounted");
+
+    const getTag = async () => {
+      const res = await fetch("/api/tag");
+      const data: TagList = await res.json();
+
+      setTagList(data);
+    };
+    getTag();
+
+    const getCategory = async () => {
+      const res = await fetch("/api/category");
+      return await res.json();
+    };
+    getCategory().then((categoryData: Category[]) => {
+      setCategoryList(categoryData);
+    });
+  }, []);
+
+  // selectCategoryの値が変更されたとき呼び出し
+  useEffect(() => {
+    console.log("change selectCategory", selectCategory);
+    if (selectCategory === 0) {
+      setSkillList([]);
+      return;
     }
-  };
-  const tagList: TagList = [
-    { id: "tag1", value: "React" },
-    { id: "tag2", value: "Vue.js" },
-    { id: "tag3", value: "Angular" },
-    { id: "tag4", value: "Next.js" },
-    { id: "tag5", value: "Nuxt.js" },
-    { id: "tag6", value: "jQuery" },
-    { id: "tag7", value: "Gatsby.js" },
-  ];
+    const getSkill = async () => {
+      const res = await fetch(`/api/skill/${selectCategory}`);
+      return await res.json();
+    };
+    getSkill().then((skillData: Skill[]) => {
+      setSkillList(skillData);
+    });
+  }, [selectCategory]);
 
   return (
     <StTopRoot>
@@ -43,6 +64,7 @@ export const Top: FC = () => {
             count={count}
             handleIncrement={handleIncrement}
             handleDecrement={handleDecrement}
+            resetCount={resetCount}
           />
         </StArticle>
         <StArticle>
@@ -50,8 +72,19 @@ export const Top: FC = () => {
           <TagArea
             tag={tag}
             tagList={tagList}
-            handleClearTag={handleClearTag}
+            handleAllClearTag={handleClearTag}
             handlePushTag={handlePushTag}
+          />
+        </StArticle>
+        <StArticle>
+          <StArticleTitle>興味のある言語/フレームワーク</StArticleTitle>
+          <Expertise
+            categoryList={categoryList}
+            handleSelectCategory={handleSelectCategory}
+            skillList={skillList}
+            selectSkill={selectSkill}
+            handleSelectSkill={handleSelectSkill}
+            handleDeleteSkill={handleDeleteSkill}
           />
         </StArticle>
       </StContent>
@@ -68,7 +101,7 @@ const StContent = styled.div`
   background-color: rgb(255, 255, 255);
 `;
 
-const StTopTitle = styled.p`
+const StTopTitle = styled.h1`
   background-color: rgb(255, 255, 255);
   padding: 16px;
   margin-bottom: 8px;
@@ -85,6 +118,7 @@ const StArticle = styled.article`
   border-radius: 3px;
 `;
 
-const StArticleTitle = styled.p`
+const StArticleTitle = styled.h2`
+  font-size: 20px;
   font-weight: bold;
 `;
